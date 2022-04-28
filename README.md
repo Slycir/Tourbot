@@ -5,7 +5,8 @@ As of now, this code should work given these assumptions.
 4. The steering motor controller is a Talon SRX
 5. The absolute encoder is tethered to the steering Talon SRX
 6. The Spark Max returns velocity as RPM
-7. All measurements are in meters
+7. All measurements are metric
+8. All angles are measured in radians
 
 As of now, there is still information needed before use
 1. Absolute encoder resolution
