@@ -12,3 +12,5 @@ As of now, there is still information needed before use
 2. Wheelbase footprint, NOT frame dimentions
 3. CAN ids for all motor controllers
 4. PID controller tuning
+
+Code uses template made by WPILib with changes for the motor controllers that I hope to use. 
