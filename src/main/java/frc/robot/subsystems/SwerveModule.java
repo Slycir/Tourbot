@@ -77,7 +77,7 @@ private final TalonSRX m_turningMotor;
     final double turnFeedforward = 
       m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+    m_driveMotor.set(driveOutput + driveFeedforward);
     m_turningMotor.set(ControlMode.PercentOutput, turnOutput + turnFeedforward);
   }
 
