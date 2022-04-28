@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Drive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -17,13 +19,24 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final XboxController m_driveController = new XboxController(0);
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Drivetrain m_drivetrain = new Drivetrain();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    m_drivetrain.setDefaultCommand(
+      new Drive(
+        m_drivetrain,
+        () -> m_driveController.getLeftX(),
+        () -> m_driveController.getLeftY(),
+        () -> m_driveController.getRightX()
+      ));
     // Configure the button bindings
     configureButtonBindings();
   }
