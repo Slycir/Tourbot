@@ -15,13 +15,13 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.subsystems.Drivetrain;
 
 public class SwerveModule {
-    private static final double kWheelRadius = 0.0508;
+    private static final double kWheelRadius = 0.0508; // In meters
     // TODO: Find out the resolution
     private static final int kEncoderResolution = 4096;
 
     private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration =
-        2 * Math.PI;
+        2 * Math.PI; // Radians per second
 
     private final CANSparkMax m_driveMotor;
     private final TalonSRX m_turningMotor;
@@ -31,7 +31,6 @@ public class SwerveModule {
     // TODO: Tune all below
     private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
 
-    // Gains are for example purposes only - must be determined for your own robot!
     private final ProfiledPIDController m_turningPIDController =
         new ProfiledPIDController(
             1,
@@ -79,10 +78,12 @@ public class SwerveModule {
     }
 
     public double getDriveRate() {
-        return m_driveEncoder.getVelocity() / 6.67 * (2 * Math.PI * kWheelRadius);
+        // Meters per second
+        return(m_driveEncoder.getVelocity() / 6.67 * (2 * Math.PI * kWheelRadius) / 60);
     }
 
     public double getRotationPosition() {
-        return (m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI);
+        // Radians
+        return((m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI));
     }
 }

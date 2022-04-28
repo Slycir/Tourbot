@@ -17,6 +17,7 @@ public class Drivetrain extends SubsystemBase {
   public static final double kMaxSpeed = 3.0;
   public static final double kMaxAngularSpeed  = Math.PI;
 
+  // TODO: Measure the wheel footprint
   private final Translation2d m_frontLeftLocation = new Translation2d(0.0, 0.0);
   private final Translation2d m_frontRightLocation = new Translation2d(0.0, 0.0);
   private final Translation2d m_backLeftLocation = new Translation2d(0.0, 0.0);
