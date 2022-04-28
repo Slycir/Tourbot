@@ -10,7 +10,7 @@ As of now, this code should work given these assumptions.
 
 As of now, there is still information needed before use
 1. Absolute encoder resolution
-2. Wheelbase footprint, NOT frame dimentions
+2. Wheelbase and track, NOT frame dimentions
 3. CAN ids for all motor controllers
 4. PID controller tuning
 
