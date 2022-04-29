@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -17,6 +19,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class SwerveModule extends SubsystemBase {
   private static final double kWheelRadius = 0.0508; // In meters
@@ -31,6 +34,7 @@ public class SwerveModule extends SubsystemBase {
 private final TalonSRX m_turningMotor;
 
   private final RelativeEncoder m_driveEncoder;
+  private final Encoder m_steerEncoder;
 
     // TODO: Tune all below
   private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
@@ -48,12 +52,17 @@ private final TalonSRX m_turningMotor;
     
   public SwerveModule(
       int driveMotorChannel,
-      int turningMotorChannel) {
+      int turningMotorChannel,
+      int steerEncoderOne,
+      int steerEncoderTwo) {
 
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new TalonSRX(turningMotorChannel);
 
     m_driveEncoder = m_driveMotor.getEncoder();
+    m_steerEncoder = new Encoder(steerEncoderOne, steerEncoderTwo);
+
+    m_steerEncoder.setDistancePerPulse(1/(414.16666666666666667 * 2 * Math.PI));
 
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
@@ -88,7 +97,11 @@ private final TalonSRX m_turningMotor;
 
     public double getRotationPosition() {
       // Radians
-    return((m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI));
+    if(Constants.ABSOLUTE_ENCODER) {
+      return((m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI));
+    } else {
+      return(m_steerEncoder.get() / 414.16666666666666667 * 2 * Math.PI);
+    }
   }
   @Override
   public void periodic() {

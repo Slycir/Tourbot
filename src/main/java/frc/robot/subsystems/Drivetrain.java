@@ -22,10 +22,10 @@ public class Drivetrain extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(0.0, 0.0);
   private final Translation2d m_backRightLocation = new Translation2d(0.0, 0.0);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(0, 0);
-  private final SwerveModule m_frontRight = new SwerveModule(0, 0);
-  private final SwerveModule m_backLeft = new SwerveModule(0, 0);
-  private final SwerveModule m_backRight = new SwerveModule(0, 0);
+  private final SwerveModule m_frontLeft = new SwerveModule(0, 0, 0, 0);
+  private final SwerveModule m_frontRight = new SwerveModule(0, 0, 0, 0);
+  private final SwerveModule m_backLeft = new SwerveModule(0, 0, 0, 0);
+  private final SwerveModule m_backRight = new SwerveModule(0, 0, 0, 0);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
