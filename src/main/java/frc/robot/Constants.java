@@ -14,4 +14,8 @@ package frc.robot;
  */
 public final class Constants {
     public static final boolean ABSOLUTE_ENCODER = false;
+
+    // Meters
+    public static final double TRACK = 0.485;
+    public static final double WHEELBASE = 0.457;
 }

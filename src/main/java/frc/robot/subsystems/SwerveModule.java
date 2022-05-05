@@ -28,22 +28,22 @@ public class SwerveModule extends SubsystemBase {
 
   private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
   private static final double kModuleMaxAngularAcceleration =
-    2 * Math.PI; // Radians per second
+    2 * Math.PI; // Radians per second per second
 
   private final CANSparkMax m_driveMotor;
-private final TalonSRX m_turningMotor;
+  private final TalonSRX m_turningMotor;
 
   private final RelativeEncoder m_driveEncoder;
   private final Encoder m_steerEncoder;
 
     // TODO: Tune all below
-  private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
+  private final PIDController m_drivePIDController = new PIDController(1, 0.1, 0.1);
 
   private final ProfiledPIDController m_turningPIDController =
     new ProfiledPIDController(
             1,
-            0,
-            0,
+            0.1,
+            0.1,
             new TrapezoidProfile.Constraints(
                 kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
@@ -61,8 +61,6 @@ private final TalonSRX m_turningMotor;
 
     m_driveEncoder = m_driveMotor.getEncoder();
     m_steerEncoder = new Encoder(steerEncoderOne, steerEncoderTwo);
-
-    m_steerEncoder.setDistancePerPulse(1/(414.16666666666666667 * 2 * Math.PI));
 
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
@@ -100,7 +98,7 @@ private final TalonSRX m_turningMotor;
     if(Constants.ABSOLUTE_ENCODER) {
       return((m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI));
     } else {
-      return(m_steerEncoder.get() / 414.16666666666666667 * 2 * Math.PI);
+      return(m_steerEncoder.get() / 414.16666667 * (2 * Math.PI));
     }
   }
   @Override

@@ -10,17 +10,17 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
   public static final double kMaxSpeed = 3.0;
   public static final double kMaxAngularSpeed  = Math.PI;
 
-  // TODO: Measure the wheel footprint
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.0, 0.0);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.0, 0.0);
-  private final Translation2d m_backLeftLocation = new Translation2d(0.0, 0.0);
-  private final Translation2d m_backRightLocation = new Translation2d(0.0, 0.0);
+  private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);
+  private final Translation2d m_frontRightLocation = new Translation2d(Constants.WHEELBASE/2, -Constants.TRACK/2);
+  private final Translation2d m_backLeftLocation = new Translation2d(-Constants.WHEELBASE/2, Constants.TRACK/2);
+  private final Translation2d m_backRightLocation = new Translation2d(-Constants.WHEELBASE/2, -Constants.TRACK/2);
 
   private final SwerveModule m_frontLeft = new SwerveModule(0, 0, 0, 0);
   private final SwerveModule m_frontRight = new SwerveModule(0, 0, 0, 0);
