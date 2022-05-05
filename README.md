@@ -3,15 +3,11 @@ As of now, this code should work given these assumptions.
 2. The steering motor is a PG71
 3. The drive motor controller is a Spark Max
 4. The steering motor controller is a Talon SRX
-5. The absolute encoder is tethered to the steering Talon SRX
-6. The Spark Max returns velocity as RPM
-7. All measurements are metric
-8. All angles are measured in radians
+5. All measurements are metric
+6. All angles are measured in radians
 
 As of now, there is still information needed before use
-1. Absolute encoder resolution
-2. Wheelbase and track, NOT frame dimentions
-3. CAN ids for all motor controllers
-4. PID controller tuning
+1. CAN ids for all motor controllers
+2. PID controller tuning
 
 Code uses template made by WPILib with changes for the motor controllers that I hope to use. Additionally, there are major changes to make it command-based.
