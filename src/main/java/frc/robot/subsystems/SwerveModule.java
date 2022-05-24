@@ -37,18 +37,18 @@ public class SwerveModule extends SubsystemBase {
   private final Encoder m_steerEncoder;
 
     // TODO: Tune all below
-  private final PIDController m_drivePIDController = new PIDController(1, 0.1, 0.1);
+  private final PIDController m_drivePIDController = new PIDController(0.1, 0.1, 0.1);
 
   private final ProfiledPIDController m_turningPIDController =
     new ProfiledPIDController(
-            1,
+            0.11,
             0.1,
             0.1,
             new TrapezoidProfile.Constraints(
                 kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.1, 0.1);
+  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0.1);
     
   public SwerveModule(
       int driveMotorChannel,
@@ -84,7 +84,7 @@ public class SwerveModule extends SubsystemBase {
     final double turnFeedforward = 
       m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    m_driveMotor.set(driveOutput + driveFeedforward);
+    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
     m_turningMotor.set(ControlMode.PercentOutput, turnOutput + turnFeedforward);
   }
 

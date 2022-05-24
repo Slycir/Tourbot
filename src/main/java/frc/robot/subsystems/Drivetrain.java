@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
-  public static final double kMaxSpeed = 3.0;
+  public static final double kMaxSpeed = 1.0;
   public static final double kMaxAngularSpeed  = Math.PI;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);
@@ -22,10 +22,10 @@ public class Drivetrain extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-Constants.WHEELBASE/2, Constants.TRACK/2);
   private final Translation2d m_backRightLocation = new Translation2d(-Constants.WHEELBASE/2, -Constants.TRACK/2);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(0, 0, 0, 0);
-  private final SwerveModule m_frontRight = new SwerveModule(0, 0, 0, 0);
-  private final SwerveModule m_backLeft = new SwerveModule(0, 0, 0, 0);
-  private final SwerveModule m_backRight = new SwerveModule(0, 0, 0, 0);
+  private final SwerveModule m_frontLeft = new SwerveModule(1, 5, 4, 5);
+  private final SwerveModule m_frontRight = new SwerveModule(2, 6, 6, 7);
+  private final SwerveModule m_backLeft = new SwerveModule(3, 7, 0, 1);
+  private final SwerveModule m_backRight = new SwerveModule(4, 8, 2, 3);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
