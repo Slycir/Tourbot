@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
-  public static final double kMaxSpeed = 1.0;
+  public static final double kMaxSpeed = 0.5;
   public static final double kMaxAngularSpeed  = Math.PI;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);

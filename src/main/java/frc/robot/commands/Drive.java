@@ -19,9 +19,9 @@ public class Drive extends CommandBase {
   DoubleSupplier m_yMove;
   DoubleSupplier m_rot;
 
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(Drivetrain.kMaxSpeed);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(Drivetrain.kMaxSpeed);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Drivetrain.kMaxAngularSpeed);
 
   /** Creates a new Drive. */
   public Drive(Drivetrain drivetrain, DoubleSupplier xMove, DoubleSupplier yMove, DoubleSupplier rot) {
@@ -54,7 +54,8 @@ public class Drive extends CommandBase {
     final var rot = 
       -m_rotLimiter.calculate(MathUtil.applyDeadband(m_rot.getAsDouble(), 0.02)) 
         * Drivetrain.kMaxAngularSpeed;
-  
+    
+    
     m_drivetrain.drive(xSpeed, ySpeed, rot, true);
   }
 
