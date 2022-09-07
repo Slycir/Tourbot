@@ -37,7 +37,7 @@ public class SwerveModule extends SubsystemBase {
   private final Encoder m_steerEncoder;
 
     // TODO: Tune all below
-  private final PIDController m_drivePIDController = new PIDController(0.1, 0.1, 0.1);
+  private final PIDController m_drivePIDController = new PIDController(1, 0.1, 0.1);
 
   private final ProfiledPIDController m_turningPIDController =
     new ProfiledPIDController(

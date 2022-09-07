@@ -19,9 +19,9 @@ public class Drive extends CommandBase {
   DoubleSupplier m_yMove;
   DoubleSupplier m_rot;
 
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(Drivetrain.kMaxSpeed);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(Drivetrain.kMaxSpeed);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Drivetrain.kMaxAngularSpeed);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(2);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(2);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(2);
 
   /** Creates a new Drive. */
   public Drive(Drivetrain drivetrain, DoubleSupplier xMove, DoubleSupplier yMove, DoubleSupplier rot) {

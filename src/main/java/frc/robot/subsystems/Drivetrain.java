@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
-  public static final double kMaxSpeed = 0.5;
+  public static final double kMaxSpeed = 1;
   public static final double kMaxAngularSpeed  = Math.PI;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);
@@ -42,10 +42,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates =
-        m_kinematics.toSwerveModuleStates(
-            fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+        m_kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d()));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
