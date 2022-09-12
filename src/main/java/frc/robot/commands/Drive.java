@@ -19,6 +19,10 @@ public class Drive extends CommandBase {
   DoubleSupplier m_yMove;
   DoubleSupplier m_rot;
 
+  double xSpeed;
+  double ySpeed; 
+  double rot;
+
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
@@ -43,17 +47,19 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    final var xSpeed = 
+    // System.out.println("Driving command exec");
+    xSpeed = 
       -m_xspeedLimiter.calculate(MathUtil.applyDeadband(m_yMove.getAsDouble(), 0.02)) 
         * Drivetrain.kMaxSpeed;
 
-    final var ySpeed = 
+    ySpeed = 
       -m_yspeedLimiter.calculate(MathUtil.applyDeadband(m_xMove.getAsDouble(), 0.02)) 
         * Drivetrain.kMaxSpeed;
-
-    final var rot = 
+    
+    rot = 
       -m_rotLimiter.calculate(MathUtil.applyDeadband(m_rot.getAsDouble(), 0.02)) 
         * Drivetrain.kMaxAngularSpeed;
+
   
     m_drivetrain.drive(xSpeed, ySpeed, rot, true);
   }

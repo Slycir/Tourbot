@@ -8,14 +8,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.SPI;
+import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
-  public static final double kMaxSpeed = 1.0;
-  public static final double kMaxAngularSpeed  = Math.PI;
+  public static final double kMaxSpeed = 5;
+  public static final double kMaxAngularSpeed  = 2 * Math.PI;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);
   private final Translation2d m_frontRightLocation = new Translation2d(Constants.WHEELBASE/2, -Constants.TRACK/2);
@@ -27,25 +28,26 @@ public class Drivetrain extends SubsystemBase {
   private final SwerveModule m_backLeft = new SwerveModule(3, 7, 0, 1);
   private final SwerveModule m_backRight = new SwerveModule(4, 8, 2, 3);
 
-  private final AnalogGyro m_gyro = new AnalogGyro(0);
+  private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   private final SwerveDriveKinematics m_kinematics = 
     new SwerveDriveKinematics(
       m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
   private final SwerveDriveOdometry m_odometry = 
-    new SwerveDriveOdometry(m_kinematics, m_gyro.getRotation2d());
+    new SwerveDriveOdometry(m_kinematics, ahrs.getRotation2d());
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    m_gyro.reset();
+    ahrs.reset();
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    // System.out.println("Driving!");
     var swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
-            fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+          ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, ahrs.getRotation2d())
+          // new ChassisSpeeds(xSpeed, ySpeed, rot)
+          );
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
@@ -56,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        ahrs.getRotation2d(),
         m_frontLeft.getState(),
         m_frontRight.getState(),
         m_backLeft.getState(),
