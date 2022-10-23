@@ -16,7 +16,7 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
 
   public static final double kMaxSpeed = 5;
-  public static final double kMaxAngularSpeed  = 2 * Math.PI;
+  public static final double kMaxAngularSpeed  = 4 * Math.PI;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.WHEELBASE/2, Constants.TRACK/2);
   private final Translation2d m_frontRightLocation = new Translation2d(Constants.WHEELBASE/2, -Constants.TRACK/2);
@@ -68,5 +68,6 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateOdometry();
   }
 }
