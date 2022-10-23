@@ -28,7 +28,7 @@ public class SwerveModule extends SubsystemBase {
 
   private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
   private static final double kModuleMaxAngularAcceleration =
-    2 * Math.PI; // Radians per second per second
+    8 * Math.PI; // Radians per second per second
 
   private final CANSparkMax m_driveMotor;
   private final TalonSRX m_turningMotor;
@@ -37,17 +37,17 @@ public class SwerveModule extends SubsystemBase {
   private final Encoder m_steerEncoder;
 
     // TODO: Tune all below
-  private final PIDController m_drivePIDController = new PIDController(1, 0.1, 0.1);
+  private final PIDController m_drivePIDController = new PIDController(2, 4, 0.1);
 
   private final ProfiledPIDController m_turningPIDController =
     new ProfiledPIDController(
-            0.11,
+            2,
             0.1,
             0.1,
             new TrapezoidProfile.Constraints(
                 kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.1, 0.1);
+  // private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.1, 0.1);
   private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.1, 0.1);
     
   public SwerveModule(
@@ -70,17 +70,17 @@ public class SwerveModule extends SubsystemBase {
     }
 
   public void setDesiredState(SwerveModuleState desiredState) {
-    if (Math.abs(desiredState.speedMetersPerSecond) < 0.001){
+
+    if (Math.abs(desiredState.speedMetersPerSecond) < 0.01){
       stop();
       return;
     }
+
     SwerveModuleState state = 
       SwerveModuleState.optimize(desiredState, new Rotation2d(getRotationPosition()));
 
     final double driveOutput =
       m_drivePIDController.calculate(getDriveRate(), state.speedMetersPerSecond);
-
-    final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     final double turnOutput =
       m_turningPIDController.calculate(getRotationPosition(), state.angle.getRadians());
@@ -88,7 +88,7 @@ public class SwerveModule extends SubsystemBase {
     final double turnFeedforward = 
       m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    m_driveMotor.setVoltage(driveOutput + driveFeedforward);
+    m_driveMotor.setVoltage(driveOutput);
     m_turningMotor.set(ControlMode.PercentOutput, turnOutput + turnFeedforward);
   }
 
@@ -107,9 +107,15 @@ public class SwerveModule extends SubsystemBase {
     if(Constants.ABSOLUTE_ENCODER) {
       return((m_turningMotor.getSelectedSensorPosition() / kEncoderResolution) * (2 * Math.PI));
     } else {
-      return(m_steerEncoder.get() / 414.16666667 * (2 * Math.PI));
+      return((m_steerEncoder.get() / 414.16666667) * (2 * Math.PI));
     }
   }
+
+  public void stop() {
+    m_driveMotor.set(0);
+    m_turningMotor.set(ControlMode.PercentOutput, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
