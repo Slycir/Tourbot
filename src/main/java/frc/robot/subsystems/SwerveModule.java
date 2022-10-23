@@ -28,7 +28,7 @@ public class SwerveModule extends SubsystemBase {
 
   private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
   private static final double kModuleMaxAngularAcceleration =
-    2 * Math.PI; // Radians per second per second
+    8 * Math.PI; // Radians per second per second
 
   private final CANSparkMax m_driveMotor;
   private final TalonSRX m_turningMotor;
@@ -70,6 +70,12 @@ public class SwerveModule extends SubsystemBase {
     }
 
   public void setDesiredState(SwerveModuleState desiredState) {
+
+    if (Math.abs(desiredState.speedMetersPerSecond) < 0.01){
+      stop();
+      return;
+    }
+
     SwerveModuleState state = 
       SwerveModuleState.optimize(desiredState, new Rotation2d(getRotationPosition()));
 
@@ -99,6 +105,12 @@ public class SwerveModule extends SubsystemBase {
       return((m_steerEncoder.get() / 414.16666667) * (2 * Math.PI));
     }
   }
+
+  public void stop() {
+    m_driveMotor.set(0);
+    m_turningMotor.set(ControlMode.PercentOutput, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
